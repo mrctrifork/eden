@@ -2,6 +2,8 @@ import type { InputSchema } from 'elysia'
 import type { Treaty } from './types'
 import { isNumericString } from '../treaty/utils'
 
+const DateRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/
+
 export class EdenWS<in out Schema extends InputSchema<any> = {}> {
     ws: WebSocket
 
@@ -64,7 +66,11 @@ export class EdenWS<in out Schema extends InputSchema<any> = {}> {
 
                     if (start === 91 || start === 123)
                         try {
-                            data = JSON.parse(data)
+                            data = JSON.parse(data, (_, value) => (
+                                // Ideally we'd rely on TypeBox's schema to deserialize
+                                // but this is just a best effort without it
+                                !DateRegex.test(value) ? value : new Date(value)
+                            ))
                         } catch {
                             // Not Empty
                         }
@@ -73,6 +79,7 @@ export class EdenWS<in out Schema extends InputSchema<any> = {}> {
                     else if (data === 'true') data = true
                     else if (data === 'false') data = false
                     else if (data === 'null') data = null
+                    else if (DateRegex.test(data)) data = new Date(data)
 
                     listener({
                         ...ws,
