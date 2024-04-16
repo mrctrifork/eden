@@ -62,7 +62,7 @@ export class EdenWS<in out Schema extends InputSchema<any> = {}> {
                     let data = (ws as MessageEvent).data.toString() as any
                     const start = data.charCodeAt(0)
 
-                    if (start === 47 || start === 123)
+                    if (start === 91 || start === 123)
                         try {
                             data = JSON.parse(data)
                         } catch {
@@ -72,6 +72,7 @@ export class EdenWS<in out Schema extends InputSchema<any> = {}> {
                     else if (isNumericString(data)) data = +data
                     else if (data === 'true') data = true
                     else if (data === 'false') data = false
+                    else if (data === 'null') data = null
 
                     listener({
                         ...ws,
