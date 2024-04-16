@@ -49,7 +49,7 @@
     "dev": "bun run --watch example/index.ts",
     "test": "bun test && bun test:types",
     "test:types": "tsc --project tsconfig.test.json",
-    "build": "rimraf dist && bunx tsup",
+    "build": "rimraf dist && tsup",
     "release": "npm run build && npm run test && npm publish --access public",
     "prepare": "bun i && npm run build"
   },
