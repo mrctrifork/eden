@@ -50,7 +50,8 @@
     "test": "bun test && bun test:types",
     "test:types": "tsc --project tsconfig.test.json",
     "build": "rimraf dist && tsup",
-    "release": "npm run build && npm run test && npm publish --access public"
+    "release": "npm run build && npm run test && npm publish --access public",
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "elysia": ">= 1.0.2"
